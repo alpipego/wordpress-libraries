@@ -1,6 +1,6 @@
 <?php
-    
-namespace QuanDigital\WpLib;
+
+namespace Alpipego\WpLib;
 
 class Boilerplate
 {
@@ -11,7 +11,7 @@ class Boilerplate
     {
         // parent variable
         $this->file = $file;
-        
+
         // check if acf plugin is active and pass custom (static) activation function on activation
         $this->activationHook($func);
         // check if acf plugin is active
@@ -20,13 +20,13 @@ class Boilerplate
         // setup acf to import this plugins fields
         $this->includeFields();
     }
-    
+
     private function includeFields()
     {
         $this->path = \plugin_basename($this->file);
         add_filter('acf/settings/load_json', function($paths) {
             $paths[] = $this->getPath() . '/inc';
-            
+
             return $paths;
         }, 9);
     }

@@ -1,5 +1,5 @@
 {
-    "name": "quandigital/wp-libs",
+    "name": "alpipego/wordpress-libs",
     "description": "Common/Shared functionality for the quandigital.com WordPress site",
     "license": "MIT",
     "autoload": {

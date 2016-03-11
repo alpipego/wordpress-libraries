@@ -1,6 +1,6 @@
 <?php
 
-namespace QuanDigital\WpLib;
+namespace Alpipego\WpLib;
 
 class Helpers
 {

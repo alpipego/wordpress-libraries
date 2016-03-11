@@ -1,6 +1,6 @@
 <?php
 
-namespace QuanDigital\WpLib;
+namespace Alpipego\WpLib;
 
 class CreateCpt
 {
@@ -16,7 +16,7 @@ class CreateCpt
         $this->mapMetaCaps();
     }
 
-    public function labels($singular, $plural) 
+    public function labels($singular, $plural)
     {
         $labels = [
             'name' => $plural,
@@ -36,7 +36,7 @@ class CreateCpt
 
         return $labels;
     }
-    
+
     public function capabilities($posttype)
     {
         $capabilities = [
@@ -83,7 +83,7 @@ class CreateCpt
         return $supports;
     }
 
-    public function createCpt() 
+    public function createCpt()
     {
         $args = $this->support();
 
