@@ -18,7 +18,7 @@ class CreateCpt
         $this->plural = $plural;
         $this->icon = $icon;
         $this->supports = $supports;
-        $this->rewrite = $rewrite ? (array) $rewrite : $posttype;
+        $this->rewrite = $rewrite ? (array) $rewrite : ['slug' => $posttype];
 
         $this->createCpt();
         $this->mapMetaCaps();
