@@ -18,6 +18,7 @@ class CreateCpt
         $this->plural = $plural;
         $this->icon = $icon;
         $this->supports = $supports;
+        $this->role = $role;
         $this->rewrite = $rewrite ? (array) $rewrite : ['slug' => $posttype];
 
         $this->createCpt();
@@ -100,15 +101,13 @@ class CreateCpt
         $args['capabilities'] = $this->capabilities($this->posttype);
         $args['menu_icon'] = $this->icon ? $this->icon : 'dashicons-edit';
 
-        \add_action('init', function() use ($args) {
-            \register_post_type($this->posttype, $args);
-            $this->addCaps();
-        });
+        \register_post_type($this->posttype, $args);
+        $this->addCaps();
     }
 
     public function addCaps()
     {
-        $role = \get_role($role);
+        $role = \get_role($this->role);
         foreach($this->capabilities($this->posttype) as $new_cap) {
             if (!empty($new_cap) && !$role->has_cap($new_cap)) {
                 $role->add_cap($new_cap);
