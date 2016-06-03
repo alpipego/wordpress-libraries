@@ -4,13 +4,21 @@ namespace Alpipego\WpLib;
 
 class CreateCpt
 {
-    public function __construct($posttype, $singular, $plural, $icon = false, $supports = ['title', 'editor', 'author', 'thumbnail', 'revisions'], $role = 'administrator')
+    protected $posttype;
+    protected $singular;
+    protected $plural;
+    protected $icon;
+    protected $supports;
+    protected $rewrite;
+
+    public function __construct($posttype, $singular, $plural, $icon = false, $supports = ['title', 'editor', 'author', 'thumbnail', 'revisions'], $role = 'administrator', $rewrite = false)
     {
         $this->posttype = $posttype;
         $this->singular = $singular;
         $this->plural = $plural;
         $this->icon = $icon;
         $this->supports = $supports;
+        $this->rewrite = $rewrite ? (array) $rewrite : $posttype;
 
         $this->createCpt();
         $this->mapMetaCaps();
@@ -70,6 +78,15 @@ class CreateCpt
             'has_archive' => true,
             'exclude_from_search' => false,
             'publicly_queryable' => true,
+        ];
+    }
+
+    protected function rewrite()
+    {
+        return [
+            'slug' => $this->rewrite['slug'],
+            'feeds' => isset($this->rewrite['feeds']) ? $this->rewrite['feeds'] : false,
+            'with_front' => isset($this->rewrite['with_front']) ? $this->rewrite['with_front'] : false,
         ];
     }
 
