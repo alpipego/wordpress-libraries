@@ -10,16 +10,18 @@ class CreateCpt
     protected $icon;
     protected $supports;
     protected $rewrite;
+    protected $queryVar;
 
-    public function __construct($posttype, $singular, $plural, $icon = false, $supports = ['title', 'editor', 'author', 'thumbnail', 'revisions'], $role = 'administrator', $rewrite = false)
+    public function __construct($posttype, $singular, $plural, $icon = false, $supports = ['title', 'editor', 'author', 'thumbnail', 'revisions'], $role = 'administrator', $rewrite = false, $queryVar = false)
     {
         $this->posttype = $posttype;
         $this->singular = $singular;
         $this->plural = $plural;
-        $this->icon = $icon;
+        $this->icon = $icon ? $icon : 'dashicons-edit';
         $this->supports = $supports;
         $this->role = $role;
         $this->rewrite = $rewrite ? (array) $rewrite : ['slug' => $posttype];
+        $this->queryVar = $queryVar ? $queryVar : $posttype;
 
         $this->createCpt();
         $this->mapMetaCaps();
@@ -79,6 +81,7 @@ class CreateCpt
             'has_archive' => true,
             'exclude_from_search' => false,
             'publicly_queryable' => true,
+
         ];
     }
 
@@ -99,7 +102,9 @@ class CreateCpt
         $args['labels'] = $this->labels($this->singular, $this->plural);
         $args['capability_type'] = $this->posttype;
         $args['capabilities'] = $this->capabilities($this->posttype);
-        $args['menu_icon'] = $this->icon ? $this->icon : 'dashicons-edit';
+        $args['menu_icon'] = $this->icon;
+        $args['rewrite'] = $this->rewrite();
+        $args['query_var'] = $this->queryVar;
 
         \register_post_type($this->posttype, $args);
         $this->addCaps();
