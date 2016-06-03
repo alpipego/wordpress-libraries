@@ -4,7 +4,7 @@ namespace Alpipego\WpLib;
 
 class CreateCpt
 {
-    public function __construct($posttype, $singular, $plural, $icon = false, $supports = false)
+    public function __construct($posttype, $singular, $plural, $icon = false, $supports = ['title', 'editor', 'author', 'thumbnail', 'revisions'], $role = 'administrator')
     {
         $this->posttype = $posttype;
         $this->singular = $singular;
@@ -18,7 +18,7 @@ class CreateCpt
 
     public function labels($singular, $plural)
     {
-        $labels = [
+        return [
             'name' => $plural,
             'singular_name' => $singular,
             'menu_name' => $singular,
@@ -33,13 +33,11 @@ class CreateCpt
             'not_found' => 'No ' . $plural . ' found',
             'not_found_in_trash' => 'No ' . $plural . ' found in Trash',
         ];
-
-        return $labels;
     }
 
     public function capabilities($posttype)
     {
-        $capabilities = [
+         return [
             'read_post' => 'read_' . $posttype,
             'read_private_posts' => 'read_private_' . $posttype,
             'publish_posts' => 'publish_' . $posttype . 's',
@@ -55,14 +53,12 @@ class CreateCpt
             'read_comments_' . $posttype . 's',
             'read_' . $posttype . 's',
         ];
-
-        return $capabilities;
     }
 
     public function support()
     {
-        $supports = [
-            'supports' => ['title', 'editor', 'author', 'thumbnail', 'revisions',],
+        return [
+            'supports' => $this->supports,
             'hierarchical' => false,
             'public' => true,
             'show_ui' => true,
@@ -75,12 +71,6 @@ class CreateCpt
             'exclude_from_search' => false,
             'publicly_queryable' => true,
         ];
-
-        if (is_array($this->supports)) {
-            $supports = array_merge($supports, $this->supports);
-        }
-
-        return $supports;
     }
 
     public function createCpt()
@@ -101,7 +91,7 @@ class CreateCpt
 
     public function addCaps()
     {
-        $role = \get_role('administrator');
+        $role = \get_role($role);
         foreach($this->capabilities($this->posttype) as $new_cap) {
             if (!empty($new_cap) && !$role->has_cap($new_cap)) {
                 $role->add_cap($new_cap);
