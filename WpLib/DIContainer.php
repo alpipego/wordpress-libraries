@@ -12,7 +12,7 @@ use Pimple\Container;
 
 /**
  * Extends Pimple Container
- * @package Alpipego\Resizefly
+ * @package Alpipego\WpLib
  */
 class DIContainer {
 	/**
