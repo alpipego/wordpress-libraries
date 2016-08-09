@@ -50,6 +50,15 @@ class Boilerplate
         });
     }
 
+	/**
+	 * wrapper for `load_plugin_textdomain`
+	 *
+	 * @param $dir path to languages dir
+	 */
+	public function loadTextdomain( $domain, $dir ) {
+		\load_plugin_textdomain( $domain, false, $dir );
+	}
+
     private function activationHook($func)
     {
         \register_activation_hook($this->file, function() use ($func) {
