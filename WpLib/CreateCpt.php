@@ -8,6 +8,7 @@ class CreateCpt
     protected $singular;
     protected $plural;
     protected $icon;
+	protected $role;
     protected $supports;
     protected $rewrite;
     protected $queryVar;
