@@ -9,12 +9,12 @@
 namespace Alpipego\WpLib;
 
 use Pimple\Container;
-
+use ReflectionClass;
 /**
  * Extends Pimple Container
  * @package Alpipego\WpLib
  */
-class DIContainer {
+class DIContainer extends Container {
 	/**
 	 * Calls `run()` method on all objects registered on plugin container
 	 */
