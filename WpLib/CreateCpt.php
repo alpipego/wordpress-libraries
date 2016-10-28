@@ -9,6 +9,7 @@ class CreateCpt {
 	protected $icon;
 	protected $role;
 	protected $supports;
+	protected $features;
 	protected $rewrite;
 	protected $queryVar;
 
@@ -19,7 +20,7 @@ class CreateCpt {
 		'author',
 		'thumbnail',
 		'revisions'
-	], $role = 'administrator', $rewrite = false, $queryVar = false
+	], $role = 'administrator', $rewrite = false, $queryVar = false, $features = []
 	) {
 		$this->posttype = $posttype;
 		$this->singular = $singular;
@@ -28,6 +29,7 @@ class CreateCpt {
 		$this->supports = $supports;
 		$this->role     = $role;
 		$this->rewrite  = $rewrite ? (array) $rewrite : [ 'slug' => $posttype ];
+		$this->features = $features;
 		$this->queryVar = $queryVar ? $queryVar : $posttype;
 	}
 
@@ -52,7 +54,7 @@ class CreateCpt {
 	}
 
 	public function support() {
-		return [
+		return array_merge([
 			'supports'            => $this->supports,
 			'hierarchical'        => false,
 			'public'              => true,
@@ -66,7 +68,7 @@ class CreateCpt {
 			'exclude_from_search' => false,
 			'publicly_queryable'  => true,
 
-		];
+		], $this->features);
 	}
 
 	public function labels( $singular, $plural ) {
