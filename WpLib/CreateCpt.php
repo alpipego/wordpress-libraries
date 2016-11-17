@@ -28,7 +28,7 @@ class CreateCpt {
 		$this->icon     = $icon ? $icon : 'dashicons-edit';
 		$this->supports = $supports;
 		$this->role     = $role;
-		$this->rewrite  = $rewrite ? (array) $rewrite : [ 'slug' => $posttype ];
+		$this->rewrite  = $rewrite;
 		$this->features = $features;
 		$this->queryVar = $queryVar ? $queryVar : $posttype;
 	}
@@ -54,7 +54,7 @@ class CreateCpt {
 	}
 
 	public function support() {
-		return array_merge([
+		return array_merge( [
 			'supports'            => $this->supports,
 			'hierarchical'        => false,
 			'public'              => true,
@@ -68,14 +68,14 @@ class CreateCpt {
 			'exclude_from_search' => false,
 			'publicly_queryable'  => true,
 
-		], $this->features);
+		], $this->features );
 	}
 
 	public function labels( $singular, $plural ) {
 		return [
 			'name'               => $plural,
 			'singular_name'      => $singular,
-			'menu_name'          => $singular,
+			'menu_name'          => $plural,
 			'parent_item_colon'  => 'Parent ' . $singular . ':',
 			'all_items'          => 'All ' . $plural,
 			'view_item'          => 'View ' . $singular,
@@ -109,10 +109,14 @@ class CreateCpt {
 	}
 
 	protected function rewrite() {
+		if ( ! is_array( $this->rewrite ) ) {
+			return $this->rewrite;
+		}
+
 		return [
 			'slug'       => $this->rewrite['slug'],
-			'feeds'      => isset( $this->rewrite['feeds'] ) ? $this->rewrite['feeds'] : false,
-			'with_front' => isset( $this->rewrite['with_front'] ) ? $this->rewrite['with_front'] : false,
+			'feeds'      => $this->rewrite['feeds'] ?? false,
+			'with_front' => $this->rewrite['with_front'] ?? false,
 		];
 	}
 
