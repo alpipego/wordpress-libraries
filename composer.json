@@ -1,6 +1,6 @@
 {
     "name": "alpipego/wordpress-libs",
-    "description": "Common/Shared functionality for the quandigital.com WordPress site",
+    "description": "Common/Shared functionality for the my WordPress sites",
     "license": "MIT",
     "autoload": {
         "psr-4": {
@@ -8,7 +8,7 @@
         }
     },
     "require": {
-        "php": ">=5.4",
+        "php": "^7.0",
         "pimple/pimple": "^3.0"
     }
 }
