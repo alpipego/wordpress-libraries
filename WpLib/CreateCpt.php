@@ -131,6 +131,10 @@ class CreateCpt {
 
 	public function mapMetaCaps() {
 		\add_filter( 'map_meta_cap', function ( $caps, $cap, $user_id, $args ) {
+			if ( empty( $args ) ) {
+				return $caps;
+			}
+
 			$cap_type = $this->posttype;
 
 			/* If editing, deleting, or reading a cpt, get the post and post type object. */

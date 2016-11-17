@@ -15,14 +15,15 @@ class Boilerplate {
 	private $textDomain;
 	private $languagesDir;
 
-	public function __construct( $file, $func = null, $textdomain = '', $languagesDir = __DIR__ . 'languages' ) {
+	public function __construct( $file, $activation = null, $textdomain = '', $languagesDir = __DIR__ . 'languages', $deactivation = null) {
 		// parent variable
 		$this->file         = $file;
 		$this->textDomain   = $textdomain;
 		$this->languagesDir = $languagesDir;
 
 		// check if acf plugin is active and pass custom (static) activation function on activation
-		$this->activationHook( $func );
+		$this->activationHook( $activation );
+		$this->deactivationHook( $deactivation );
 	}
 
 	protected function activationHook( $func ) {
@@ -35,6 +36,14 @@ class Boilerplate {
 	}
 
 	protected function checkDependencies() {
+	}
+
+	protected function deactivationHook( $func ) {
+		\register_deactivation_hook( $this->file, function () use ( $func ) {
+			if ( ! is_null( $func ) ) {
+				call_user_func( $func );
+			}
+		} );
 	}
 
 	public function run() {
