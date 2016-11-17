@@ -12,10 +12,14 @@ namespace Alpipego\WpLib\Plugin;
 class Boilerplate {
 	protected $file;
 	protected $path;
+	private $textDomain;
+	private $languagesDir;
 
-	public function __construct( $file, $func = null ) {
+	public function __construct( $file, $func = null, $textdomain = '', $languagesDir = __DIR__ . 'languages' ) {
 		// parent variable
-		$this->file = $file;
+		$this->file         = $file;
+		$this->textDomain   = $textdomain;
+		$this->languagesDir = $languagesDir;
 
 		// check if acf plugin is active and pass custom (static) activation function on activation
 		$this->activationHook( $func );
@@ -49,7 +53,9 @@ class Boilerplate {
 	 *
 	 * @param string $dir path to languages dir
 	 */
-	public function loadTextdomain( $domain, $dir ) {
-		\load_plugin_textdomain( $domain, false, $dir );
+	public function loadTextdomain() {
+		if ( ! empty( $this->textDomain ) ) {
+			\load_plugin_textdomain( $this->textDomain, false, $this->languagesDir );
+		}
 	}
 }
