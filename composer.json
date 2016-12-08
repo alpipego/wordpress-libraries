@@ -1,0 +1,14 @@
+{
+    "name": "alpipego/wordpress-libs",
+    "description": "Common/Shared functionality for the my WordPress sites",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Alpipego\\": ""
+        }
+    },
+    "require": {
+        "php": "^7.0",
+        "pimple/pimple": "^3.0"
+    }
+}
