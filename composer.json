@@ -4,7 +4,7 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Alpipego\\WpLib": "src"
+            "Alpipego\\WpLib\\": "src"
         }
     },
     "require": {
