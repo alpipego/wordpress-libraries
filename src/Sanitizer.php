@@ -1,9 +1,19 @@
 <?php
-
+declare( strict_types = 1 );
 namespace Alpipego\WpLib;
 
+/**
+ * Class Sanitizer sanitize German Strings
+ * @package Alpipego\WpLib
+ */
 class Sanitizer {
-	public function name( $string ) {
+	/**
+	 * @deprecated 4.0.0
+	 * @param string $string
+	 *
+	 * @return string
+	 */
+	public function name( string $string ) : string {
 		return str_replace( [ 'ä', 'ü', 'ö', 'ß' ], [
 			'ae',
 			'ue',
@@ -12,7 +22,12 @@ class Sanitizer {
 		], preg_replace( '%\h%', '-', mb_strtolower( (string) $string ) ) );
 	}
 
-	public function permalink( $string ) {
+	/**
+	 * @param string $string
+	 *
+	 * @return string
+	 */
+	public function permalink( string $string ) : string {
 		// remove any whitespace
 		$string = preg_replace( '%\h%', '-', mb_strtolower( (string) $string ) );
 		// convert German Umlauts and SZ

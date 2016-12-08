@@ -5,11 +5,12 @@
  * Date: 09/08/16
  * Time: 12:35
  */
-
+declare( strict_types = 1 );
 namespace Alpipego\WpLib;
 
 use Pimple\Container;
 use ReflectionClass;
+
 /**
  * Extends Pimple Container
  * @package Alpipego\WpLib

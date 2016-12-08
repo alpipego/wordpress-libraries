@@ -1,10 +1,10 @@
 {
     "name": "alpipego/wordpress-libs",
-    "description": "Common/Shared functionality for the my WordPress sites",
+    "description": "Common/Shared functionality for my WordPress sites",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Alpipego\\": ""
+            "Alpipego\\WpLib": "src"
         }
     },
     "require": {
