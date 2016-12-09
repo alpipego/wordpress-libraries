@@ -1,0 +1,15 @@
+{
+  "name": "wordpress-libs",
+  "version": "1.0.0",
+  "description": "WordPress shared functionality libraries and boilerplate code",
+  "main": "index.js",
+  "repository": "https://github.com/alpipego/wordpress-libraries.git",
+  "author": "alpipego <alpipego@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "grunt": "^1.0.1",
+    "grunt-pot": "^0.3.0",
+    "load-grunt-tasks": "^3.5.2",
+    "time-grunt": "^1.4.0"
+  }
+}
