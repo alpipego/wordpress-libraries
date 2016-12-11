@@ -26,9 +26,9 @@ class Taxonomy extends AbstractCustom {
 	}
 
 	public function run() {
-//		if ( $this->capability_type === 'post' ) {
+		if ( $this->capability_type === 'post' ) {
 			$this->capObj->map( $this->taxonomy, $this->capabilities()->capabilities, $this->roles )->run();
-//		}
+		}
 		add_action( 'init', [ $this, 'register' ] );
 	}
 

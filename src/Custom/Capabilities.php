@@ -25,13 +25,13 @@ class Capabilities {
 	public function run() {
 		if ( ! empty( $this->capType ) ) {
 			add_action( 'init', [ $this, 'addToRole' ], 11 );
-			add_action( 'init', [ $this, 'mapMetaCaps' ], 12 );
+//			add_action( 'init', [ $this, 'mapMetaCaps' ], 12 );
 		}
 	}
 
 	public function mapMetaCaps() {
 		add_filter( 'map_meta_cap', function ( $caps, $cap, $user_id, $args ) {
-			if ( empty( $args ) ) {
+			if ( empty( $args ) || empty($caps[0]) ) {
 				return $caps;
 			}
 
@@ -41,10 +41,11 @@ class Capabilities {
 				return $caps;
 			}
 
-			$object = $this->getObject( $objectType, (int) $args[0] );
 			echo '<code><pre>';
-			    var_dump($caps);
+			    var_dump([$caps, $cap, $objectType, $args[0]]);
 			echo '</pre></code>';
+
+			$object = $this->getObject( $objectType, (int) $args[0] );
 			$mapper = 'map' . ucfirst( $objectType ) . 'Rules';
 			$caps   = $this->$mapper( $object, (int) $user_id, $capArray );
 
@@ -83,10 +84,16 @@ class Capabilities {
 	}
 
 	private function mapTermRules( \WP_Term $term, int $userId, array $capArray ) {
-		$caps   = [];
-		$tax    = get_taxonomy( $term->taxonomy );
-		$cap    = $capArray[0] . '_' . $this->capType;
-		$caps[] = $tax->cap->$cap;
+		$caps = [];
+		$tax  = get_taxonomy( $term->taxonomy );
+		echo '<code><pre>';
+		var_dump( $tax );
+		echo '</pre></code>';
+		if ( ! empty( $tax ) ) {
+
+			$cap    = $capArray[0] . '_' . $this->capType;
+			$caps[] = $tax->cap->$cap;
+		}
 
 		return $caps;
 	}
@@ -95,26 +102,28 @@ class Capabilities {
 		$caps     = [];
 		$postType = get_post_type_object( $post->post_type );
 
-		if ( $capArray[0] === 'read' ) {
-			if ( $post->post_status === 'private' ) {
-				$cap = $capArray[0] . '_private_posts';
+		if ( $postType instanceof \WP_Post_Type ) {
+			if ( $capArray[0] === 'read' ) {
+				if ( $post->post_status === 'private' ) {
+					$cap = $capArray[0] . '_private_posts';
+				} else {
+					$cap = 'read';
+				}
 			} else {
-				$cap = 'read';
+				if ( (int) $post->post_author === $userId ) {
+					$cap = $capArray[0] . '_' . $this->capType;
+				} elseif ( $post->post_status === 'private' ) {
+					$cap = $capArray[0] . '_private_' . $this->capType . 's';
+				} else {
+					$cap = $capArray[0] . '_others_' . $this->capType . 's';
+				}
 			}
-		} else {
-			if ( (int) $post->post_author === $userId ) {
-				$cap = $capArray[0] . '_' . $this->capType;
-			} elseif ( $post->post_status === 'private' ) {
-				$cap = $capArray[0] . '_private_' . $this->capType . 's';
-			} else {
-				$cap = $capArray[0] . '_others_' . $this->capType . 's';
-			}
-		}
 
-		echo '<code><pre>';
-		var_dump( [$post->post_type, $cap] );
-		echo '</pre></code>';
-		$caps[] = $postType->cap->$cap;
+//			echo '<code><pre>';
+//			    var_dump([$post->post_type, $cap, $postType->cap->$cap, $capArray]);
+//			echo '</pre></code>';
+			$caps[] = $postType->cap->$cap;
+		}
 
 		return $caps;
 	}
