@@ -37,7 +37,7 @@ class Boilerplate implements PluginInterface {
 	}
 
 	public function __call( $name, $arguments ) {
-		$this->$name = $args[0];
+		$this->$name = $arguments[0];
 
 		return $this;
 	}
