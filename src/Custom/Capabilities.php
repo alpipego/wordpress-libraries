@@ -41,9 +41,9 @@ class Capabilities {
 				return $caps;
 			}
 
-			echo '<code><pre>';
-			    var_dump([$caps, $cap, $objectType, $args[0]]);
-			echo '</pre></code>';
+//			echo '<code><pre>';
+//			    var_dump([$caps, $cap, $objectType, $args[0]]);
+//			echo '</pre></code>';
 
 			$object = $this->getObject( $objectType, (int) $args[0] );
 			$mapper = 'map' . ucfirst( $objectType ) . 'Rules';
@@ -86,9 +86,9 @@ class Capabilities {
 	private function mapTermRules( \WP_Term $term, int $userId, array $capArray ) {
 		$caps = [];
 		$tax  = get_taxonomy( $term->taxonomy );
-		echo '<code><pre>';
-		var_dump( $tax );
-		echo '</pre></code>';
+//		echo '<code><pre>';
+//		var_dump( $tax );
+//		echo '</pre></code>';
 		if ( ! empty( $tax ) ) {
 
 			$cap    = $capArray[0] . '_' . $this->capType;

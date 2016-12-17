@@ -13,7 +13,7 @@ class PostType extends AbstractCustom {
 
 	public function run() {
 //		if ( $this->capability_type === 'post' ) {
-//			$this->capObj->map( $this->posttype, $this->capabilities()->capabilities, $this->roles )->run();
+			$this->capObj->map( $this->posttype, $this->capabilities()->capabilities, $this->roles )->run();
 //		}
 		add_action( 'init', [ $this, 'create' ] );
 	}

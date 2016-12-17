@@ -21,8 +21,8 @@ abstract class AbstractAssets {
 	protected $group;
 
 	public function run() {
-		add_action( 'wp_enqueue_scripts', [ $this, 'register' ], 1 );
-		add_action( 'wp_enqueue_scripts', [ $this, 'enqueueAssets' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'register' ], 11 );
+		add_action( 'wp_enqueue_scripts', [ $this, 'enqueueAssets' ], 12 );
 	}
 
 	abstract public function register();
@@ -36,23 +36,22 @@ abstract class AbstractAssets {
 	}
 
 	protected function action( Asset $asset ) {
-		$queued = in_array( $asset->handle, $this->collection->queue, true );
-
 		if ( ! isset( $asset->action ) ) {
 			return $asset;
 		}
 
-		$merged = array_merge( (array) $asset, (array) $this->collection->registered[ $asset->handle ] );
+		$merged = array_merge( (array) $this->collection->registered[ $asset->handle ], array_filter( (array) $asset ) );
 
-		if ( ! $queued && $asset->action !== 'inline' ) {
-			// asset not yet queued
-			$asset->action = 'enqueue';
-		} elseif ( $asset->action === 'add' ) {
-			// asset is already queued (possibly changed condition)
-			foreach ( $merged as $field => $value ) {
-				$asset->$field = $value;
+		if ( $asset->action === 'add' ) {
+			if ( in_array( $asset->handle, $this->collection->queue, true ) ) {
+				// asset is already queued (possibly changed condition)
+				foreach ( $merged as $field => $value ) {
+					$asset->$field = $value;
+				}
+				$asset->action = 'requeue';
+			} else {
+				$asset->action = 'enqueue';
 			}
-			$asset->action = 'requeue';
 		} elseif ( $asset->action === 'remove' ) {
 			// asset is queued, should be removed (still looks at condition)
 			$asset->action = 'dequeue';
@@ -85,9 +84,15 @@ abstract class AbstractAssets {
 	}
 
 	private function requeue( Asset $asset ) {
-		$func = "wp_dequeue_{$this->group}";
-		$func( $asset->handle );
-		$this->enqueue( $asset );
+		if ( $this->isQueued( $asset ) ) {
+			$func = "wp_dequeue_{$this->group}";
+			$func( $asset->handle );
+			$this->enqueue( $asset );
+		}
+	}
+
+	private function isQueued( Asset $asset ) : bool {
+		return wp_script_is( $asset->handle );
 	}
 
 	private function enqueue( Asset $asset ) {
@@ -98,15 +103,14 @@ abstract class AbstractAssets {
 	}
 
 	private function update( Asset $asset ) {
-		if ( $asset->condition ) {
-			foreach ( $asset->data as $key => $value ) {
-				$this->collection->add_data( $asset->handle, $key, $value );
-			}
+		foreach ( $asset->data as $key => $value ) {
+			$this->collection->add_data( $asset->handle, $key, $value );
 		}
 	}
 
 	private function inline( Asset $asset ) {
 		if ( $asset->condition ) {
+
 			$path = preg_replace( '%(?:https?:)?//[^/]+(/.+)$%', '$1', $asset->src );
 			$file = array_filter( [ ABSPATH . $path, ABSPATH . '..' . $path ], 'file_exists' );
 			if ( ! empty( $file ) ) {
@@ -114,15 +118,23 @@ abstract class AbstractAssets {
 				if ( filesize( $file ) < 2000 ) {
 					$contents = file_get_contents( $file );
 					$contents = preg_replace( '%[\t\n]|\h{2,}%', '', $contents );
-					$contents = preg_replace( '%(/\*.+?\*/)%', '', $contents );
+					$contents = preg_replace( '%(/[/*].*?(\*/)?)$%', '', $contents );
 					$this->dequeue( $asset );
 
 					$dependency = end( $asset->deps );
+					$action     = isset( $asset->footer ) && $asset->footer ? 'wp_footer' : 'wp_head';
 					if ( $dependency ) {
-						$func = "wp_add_inline_{$this->group}";
-						$func( end( $asset->deps ), $contents );
+						if ( $dependency === 'jquery' ) {
+							add_action( $action, function () use ( $contents ) {
+								if ( wp_script_is( 'jquery', 'done' ) ) {
+									printf( '<%1$s>%2$s</%1$s>', $this->group, $contents );
+								}
+							} );
+						} else {
+							$func = "wp_add_inline_{$this->group}";
+							$func( $dependency, $contents );
+						}
 					} else {
-						$action = isset( $this->footer ) && $this->footer ? 'wp_footer' : 'wp_head';
 						add_action( $action, function () use ( $contents ) {
 							printf( '<%1$s>%2$s</%1$s>', $this->group, $contents );
 						} );

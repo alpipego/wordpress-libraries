@@ -13,11 +13,12 @@ class Asset {
 	public $handle;
 	public $condition = true;
 	public $src = '';
-	public $ver = false;
+	public $ver = null;
 	public $deps = [];
 	public $extra = [];
 	public $action = '';
 	public $data = [];
+	public $prio = '';
 
 	public function __construct( $handle ) {
 		$this->handle = $handle;
@@ -27,8 +28,18 @@ class Asset {
 		return $this->__set( $name, $args[0] );
 	}
 
-	public function __set( $name, $args ) {
-		$this->{$name} = $args;
+	public function __set( $name, $value ) {
+		if ( property_exists( $this, $name ) ) {
+			if ( is_array( $this->$name ) ) {
+				if ( ! is_array( $value ) ) {
+					$this->$name[] = $value;
+				} else {
+					$this->$name = array_merge( $this->$name, $value );
+				}
+			} else {
+				$this->$name = $value;
+			}
+		}
 
 		return $this;
 	}

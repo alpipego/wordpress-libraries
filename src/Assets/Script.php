@@ -10,6 +10,8 @@ namespace Alpipego\WpLib\Assets;
 
 
 class Script extends Asset {
+	public $footer = true;
+
 	public function __construct( $handle ) {
 		parent::__construct( $handle );
 	}

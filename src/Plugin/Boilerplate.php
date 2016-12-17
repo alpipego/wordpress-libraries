@@ -20,10 +20,10 @@ class Boilerplate implements PluginInterface {
 		$this->file = $file;
 		$this->path = $this->getPath();
 		// check if acf plugin is active and pass custom (static) activation function on activation
-		$this->activationHook( $activation );
-		$this->deactivationHook( $deactivation );
-		$this->textDomain   = $textdomain;
-		$this->languagesDir = $languagesDir;
+//		$this->activationHook( $activation );
+//		$this->deactivationHook( $deactivation );
+//		$this->textDomain   = $textdomain;
+//		$this->languagesDir = $languagesDir;
 	}
 
 	public function getPath() {
@@ -59,13 +59,13 @@ class Boilerplate implements PluginInterface {
 		} );
 	}
 
-	protected function activation( callable $func ) {
+	public function activation( callable $func ) {
 		\register_activation_hook( $this->file, function () use ( $func ) {
 			call_user_func( $func );
 		} );
 	}
 
-	protected function deactivation( callable $func ) {
+	public function deactivation( callable $func ) {
 		\register_deactivation_hook( $this->file, function () use ( $func ) {
 			call_user_func( $func );
 		} );

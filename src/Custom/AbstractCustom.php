@@ -17,6 +17,7 @@ abstract class AbstractCustom {
 	protected $args = [ 'public' => true ];
 	protected $capability_type = 'post';
 	protected $capabilities = [];
+	/** @var  Capabilities $capObj */
 	protected $capObj;
 
 	public function __call( $name, $arguments ) {
