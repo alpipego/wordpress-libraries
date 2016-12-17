@@ -26,7 +26,7 @@ class Cache {
 
 	private function decide() {
 		// don't cache if cloudflare is enabled and request from cloudflare
-		if ( $cloudflare && isset( $_SERVER['HTTP_CF_CONNECTING_IP'] ) ) {
+		if ( $this->cloudflare && isset( $_SERVER['HTTP_CF_CONNECTING_IP'] ) ) {
 			$this->cache = false;
 			$this->addMessage( 'request from cloudflare ' );
 		}
