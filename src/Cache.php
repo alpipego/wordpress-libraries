@@ -63,9 +63,9 @@ class Cache {
 	}
 
 	private function setUrl() {
-		$url       = $_SERVER['REQUEST_SCHEME'] . '://' . $this->domain . $this->path;
+		$url       = $this->path;
 		$url       = preg_replace( '%^(.+?)[?&]purge=(?:(?:document)|(?:site))(.*?)$%', '$1$2', $url );
-		$this->url = $url . ( substr( $url, - 1 ) === '/' ) ? '' : '/';
+		$this->url = $url . ( substr( $url, - 1 ) === '/' ? '' : '/' );
 
 		return $this;
 	}
