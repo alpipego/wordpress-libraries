@@ -22,13 +22,12 @@ class Scripts extends AbstractAssets {
 	}
 
 	public function register() {
-		$version = $this->ver ?? WP_ENV !== 'production' ? time() : false;
 		/** @var Script $script */
 		foreach ( $this->assets as $script ) {
 			if ( in_array( $script->handle, array_keys( $this->collection->registered ) ) ) {
 				continue;
 			}
-			wp_register_script( $script->handle, $this->path ?? $this->getSrc( $script, 'js' ), $this->deps ?? [], $version, $this->footer ?? true );
+			wp_register_script( $script->handle, $script->src ?: $this->getSrc( $script, 'js' ), $script->deps ?? [], $script->ver, $script->footer ?? true );
 		}
 	}
 

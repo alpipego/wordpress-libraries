@@ -24,7 +24,7 @@ class Styles extends AbstractAssets {
 	public function register() {
 		foreach ( $this->assets as $style ) {
 			if ( ! array_key_exists( $style->handle, $this->collection->registered ) ) {
-				wp_register_style( $style->handle, $style->scr ?? $this->getSrc( $style, 'css' ), $this->deps ?? [], $this->ver ?? false, $this->media ?? 'screen' );
+				wp_register_style( $style->handle, $style->src ?: $this->getSrc( $style, 'css' ), $style->deps ?? [], $style->ver ?? false, $this->media ?? 'screen' );
 			}
 		}
 	}
