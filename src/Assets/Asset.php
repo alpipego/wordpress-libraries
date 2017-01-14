@@ -19,6 +19,7 @@ class Asset {
 	public $action = '';
 	public $data = [];
 	public $prio = '';
+	public $min = false;
 
 	public function __construct( $handle ) {
 		$this->handle = $handle;

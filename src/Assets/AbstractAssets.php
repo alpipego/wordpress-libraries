@@ -80,7 +80,10 @@ abstract class AbstractAssets {
 	}
 
 	protected function getSrc( Asset $asset, string $fragment ) : string {
-		return sprintf( '%1$s/%2$s/%3$s.%2$s', get_template_directory_uri(), $fragment, $asset->handle );
+		$assetDir = apply_filters( 'alpipego/libs/assets/dir', get_stylesheet_directory_uri() );
+		$handle   = $asset->min ? $asset->handle . '.min' : $asset->handle;
+
+		return sprintf( '%1$s/%2$s/%3$s.%2$s', $assetDir, $fragment, $handle );
 	}
 
 	private function requeue( Asset $asset ) {
