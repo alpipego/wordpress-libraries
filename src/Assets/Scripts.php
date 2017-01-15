@@ -28,6 +28,15 @@ class Scripts extends AbstractAssets {
 				continue;
 			}
 			wp_register_script( $script->handle, $script->src ?: $this->getSrc( $script, 'js' ), $script->deps ?? [], $script->ver, $script->footer ?? true );
+			if ( ! empty( $script->localize ) ) {
+				$this->localize( $script );
+			}
+		}
+	}
+
+	private function localize( Script $script ) {
+		foreach ( $script->localize as $key => $value ) {
+			wp_localize_script( $script->handle, $key, $value );
 		}
 	}
 

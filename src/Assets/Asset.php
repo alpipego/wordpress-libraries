@@ -17,8 +17,8 @@ class Asset {
 	public $deps = [];
 	public $extra = [];
 	public $action = '';
-	public $data = [];
 	public $prio = '';
+	public $localize = [];
 	public $min = false;
 
 	public function __construct( $handle ) {
