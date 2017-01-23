@@ -20,6 +20,8 @@ class Asset {
 	public $prio = '';
 	public $localize = [];
 	public $min = false;
+	public $data = [];
+	public $footer = false;
 
 	public function __construct( $handle ) {
 		$this->handle = $handle;

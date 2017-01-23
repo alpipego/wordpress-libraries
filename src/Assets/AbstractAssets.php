@@ -100,8 +100,15 @@ abstract class AbstractAssets {
 
 	private function enqueue( Asset $asset ) {
 		if ( $asset->condition ) {
-			$func = "wp_enqueue_{$this->group}";
-			$func( $asset->handle );
+			if ( $this->group === 'style' && $asset->footer ) {
+				add_action( 'wp_footer', function () use ( $asset ) {
+					$func = "wp_enqueue_{$this->group}";
+					$func( $asset->handle );
+				} );
+			} else {
+				$func = "wp_enqueue_{$this->group}";
+				$func( $asset->handle );
+			}
 		}
 	}
 
