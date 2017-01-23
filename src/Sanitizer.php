@@ -7,8 +7,13 @@ namespace Alpipego\WpLib;
  * @package Alpipego\WpLib
  */
 class Sanitizer {
+	public static function encoding( string $string ) : string {
+		return htmlspecialchars_decode( utf8_decode( htmlentities( $string, ENT_COMPAT, 'utf-8', false ) ) );
+	}
+
 	/**
 	 * @deprecated 4.0.0
+	 *
 	 * @param string $string
 	 *
 	 * @return string
