@@ -10,6 +10,12 @@ namespace Alpipego\WpLib;
 
 
 abstract class AbstractRequest {
+	public function __construct() {
+		if ( ! isset( $_SESSION ) ) {
+			session_start();
+		}
+	}
+
 	protected function verify( $action ) : bool {
 		$ajax = ! empty( $_SERVER['HTTP_X_REQUESTED_WITH'] ) && strtolower( $_SERVER['HTTP_X_REQUESTED_WITH'] ) === 'xmlhttprequest';
 
@@ -23,5 +29,14 @@ abstract class AbstractRequest {
 		}
 
 		return $ajax;
+	}
+
+	protected function redirect( array $data = [] ) {
+		foreach ( $_SESSION as $sessionVar => $value ) {
+			unset( $_SESSION[ $sessionVar ] );
+		}
+		$_SESSION = $data;
+		wp_redirect( wp_get_referer() );
+		exit();
 	}
 }
