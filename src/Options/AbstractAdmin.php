@@ -12,7 +12,7 @@ namespace Alpipego\WpLib\Options;
 class AbstractAdmin {
 	protected $localized = [];
 
-	public function localizeScript( $toLocalize ) {
+	public function localizeScript( array $toLocalize ) : array {
 		foreach ( $toLocalize as $key => $value ) {
 			$this->localized[ $key ] = $value;
 		}

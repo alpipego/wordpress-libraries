@@ -23,7 +23,7 @@ class AcfBoilerplate extends Boilerplate {
 			if ( ! class_exists( '\acf' ) ) {
 				deactivate_plugins( $this->path );
 				add_action( 'admin_notices', function () {
-					echo '<div class="error"><p>Please activate <a href="https://wordpress.org/plugins/advanced-custom-fields/" target="_blank">Advanced Custom Fields</a> first.</p></div>';
+					printf( '<div class="error"><p>%s</p></div>', esc_html__( 'Please activate <a href="https://wordpress.org/plugins/advanced-custom-fields/" target="_blank">Advanced Custom Fields</a> first.', 'alpipego-wplib' ) );
 				} );
 			}
 		} );

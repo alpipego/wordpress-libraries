@@ -23,7 +23,7 @@ class Sanitizer {
 			'ae',
 			'ue',
 			'oe',
-			'ss'
+			'ss',
 		], preg_replace( '%\h%', '-', mb_strtolower( (string) $string ) ) );
 	}
 

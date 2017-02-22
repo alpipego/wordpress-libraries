@@ -13,6 +13,10 @@ namespace Alpipego\WpLib\Options;
  * Class AbstractOptionsSection
  * @package Alpipego\WpLib
  */
+/**
+ * Class AbstractOptionsSection
+ * @package Alpipego\WpLib\Options
+ */
 abstract class AbstractOptionsSection {
 	/**
 	 * @var array
@@ -33,10 +37,10 @@ abstract class AbstractOptionsSection {
 	/**
 	 * AbstractOptionsSection constructor.
 	 *
-	 * @param $page
-	 * @param $pluginPath
+	 * @param string $page
+	 * @param string $pluginPath
 	 */
-	public function __construct( $page, $pluginPath ) {
+	public function __construct( string $page, string $pluginPath ) {
 		$this->viewsPath   = $pluginPath . 'views/';
 		$this->optionsPage = $page;
 	}
@@ -54,7 +58,7 @@ abstract class AbstractOptionsSection {
 	public function addSection() {
 		\add_settings_section( $this->optionsGroup['id'], $this->optionsGroup['name'], [
 			$this,
-			'callback'
+			'callback',
 		], $this->optionsPage );
 	}
 
@@ -62,7 +66,7 @@ abstract class AbstractOptionsSection {
 	 * @param $name
 	 * @param $args
 	 */
-	protected function includeView( $name, $args ) {
+	protected function includeView( string $name, array $args ) {
 		$fileArr = preg_split( '/(?=[A-Z-_])/', $name );
 		$fileArr = array_map( function ( &$value ) {
 			return trim( $value, '-_' );

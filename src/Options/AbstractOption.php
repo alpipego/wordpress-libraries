@@ -68,7 +68,7 @@ abstract class AbstractOption {
 	public function addField() {
 		\add_settings_field( $this->optionsField['id'], $this->optionsField['title'], [
 			$this,
-			'callback'
+			'callback',
 		], $this->optionsPage, $this->optionsGroup, ! empty( $this->optionsField['args'] ) ? $this->optionsField['args'] : [] );
 	}
 

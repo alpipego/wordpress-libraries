@@ -25,9 +25,10 @@ abstract class AbstractOptionsPage {
 	/**
 	 * OptionsPage constructor.
 	 *
-	 * @param $pluginPath
+	 * @param string $pluginPath
+	 * @param string $page
 	 */
-	function __construct( $pluginPath, $page ) {
+	function __construct( string $pluginPath, string $page ) {
 		$this->viewsPath = $pluginPath . 'views/';
 		$this->page      = $page;
 	}
