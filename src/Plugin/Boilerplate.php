@@ -27,13 +27,14 @@ class Boilerplate implements PluginInterface {
 	}
 
 	public function getPath() {
-		$path = explode( '/', $this->path );
+		$path = explode( '/', $this->file );
+		array_pop( $path );
 
-		return \trailingslashit( WP_PLUGIN_DIR ) . $path[0];
+		return trailingslashit( implode( '/', $path ) );
 	}
 
 	public function run() {
-		add_action( 'plugins_loaded', [ $this, 'loadTextdomain' ] );
+		$this->loadTextdomain();
 	}
 
 	public function __call( $name, $arguments ) {
