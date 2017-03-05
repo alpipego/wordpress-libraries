@@ -9,6 +9,15 @@
     },
     "require": {
         "php": "^7.0",
-        "pimple/pimple": "^3.0"
-    }
+        "pimple/pimple": "^3.0",
+        "predis/predis": "^1.0"
+    },
+    "authors": [
+        {
+            "name": "Alexander Goller",
+            "email": "alpipego@gmail.com",
+            "homepage": "https://alpipego.com/",
+            "role": "Developer"
+        }
+    ]
 }
