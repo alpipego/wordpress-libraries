@@ -125,7 +125,7 @@ abstract class AbstractAssets {
 			$file = array_filter( [ ABSPATH . $path, ABSPATH . '..' . $path ], 'file_exists' );
 			if ( ! empty( $file ) ) {
 				$file = array_shift( $file );
-				if ( filesize( $file ) < 2000 ) {
+				if ( filesize( $file ) < apply_filters( 'alpipego/libs/assets/inline/filesize', 2000 ) ) {
 					$contents = file_get_contents( $file );
 					$contents = preg_replace( '%[\t\n]|\h{2,}%', '', $contents );
 					$contents = preg_replace( '%(/[/*].*?(\*/)?)$%', '', $contents );
@@ -144,14 +144,18 @@ abstract class AbstractAssets {
 							$func = "wp_add_inline_{$this->group}";
 							$func( $dependency, $contents );
 						}
+						return true;
 					} else {
 						add_action( $action, function () use ( $contents ) {
 							printf( '<%1$s>%2$s</%1$s>', $this->group, $contents );
 						} );
+						return true;
 					}
 				}
 			}
 		}
+
+		$this->enqueue( $asset );
 	}
 
 	private function dequeue( Asset $asset ) {
