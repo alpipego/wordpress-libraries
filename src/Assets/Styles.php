@@ -11,14 +11,14 @@ namespace Alpipego\WpLib\Assets;
 
 class Styles extends AbstractAssets {
 	public function __construct( array $assets ) {
-		$this->assets   = $assets;
+		$this->assets     = $assets;
 		$this->collection = wp_styles();
-		$this->group = 'style';
+		$this->group      = 'style';
 	}
 
 	public function run() {
 		parent::run();
-		add_filter( 'style_loader_tag', [ $this, 'lazyAssets' ], 10, 2 );
+		add_filter( 'style_loader_tag', [ $this, 'lazyCss' ], 10, 2 );
 	}
 
 	public function register() {
@@ -27,5 +27,20 @@ class Styles extends AbstractAssets {
 				wp_register_style( $style->handle, $style->src ?: $this->getSrc( $style, 'css' ), $style->deps ?? [], $style->ver ?? false, $this->media ?? 'screen' );
 			}
 		}
+	}
+
+	public function lazyCss( $tag, $handle ) {
+		/** @var Asset $asset */
+		foreach ( $this->assets as $asset ) {
+			if ( $asset->handle === $handle && ! empty( $asset->prio ) && $asset->prio === 'defer' ) {
+				add_action( 'wp_head', function () use ( $tag ) {
+					printf( '<noscript>%s</noscript>', $tag );
+				} );
+
+				return preg_replace( '%media=([^\s/]+)%', 'media="defer" data-media=$1', $tag );
+			}
+		}
+
+		return $tag;
 	}
 }

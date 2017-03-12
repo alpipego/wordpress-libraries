@@ -64,21 +64,6 @@ abstract class AbstractAssets {
 		return $asset;
 	}
 
-	public function lazyAssets( $tag, $handle ) {
-		/** @var Asset $asset */
-		foreach ( $this->assets as $asset ) {
-			if ( $asset->handle === $handle && isset( $asset->prio ) ) {
-				if ( $asset->prio === 'defer' ) {
-					return str_replace( ' src', ' defer="defer" src', $tag );
-				} elseif ( $asset->prio === 'async' ) {
-					return str_replace( ' src', ' async="async" src', $tag );
-				}
-			}
-		}
-
-		return $tag;
-	}
-
 	protected function getSrc( Asset $asset, string $fragment ) : string {
 		$assetDir = apply_filters( 'alpipego/libs/assets/dir', get_stylesheet_directory_uri() );
 		$handle   = $asset->min ? $asset->handle . '.min' : $asset->handle;

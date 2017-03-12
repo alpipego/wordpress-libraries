@@ -10,6 +10,8 @@ namespace Alpipego\WpLib\Assets;
 
 
 class Style extends Asset {
+	public $media = 'all';
+
 	public function __construct( $handle ) {
 		parent::__construct( $handle );
 	}
