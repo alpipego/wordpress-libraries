@@ -48,10 +48,14 @@ class Asset {
 	}
 
 	public function condition( callable $cond ) {
-		// TODO is this the best way to defer function here?
-		add_action( 'wp', function () use ( $cond ) {
+		if ( ! did_action( 'wp' ) ) {
+			add_action( 'wp', function () use ( $cond ) {
+				$this->condition = call_user_func( $cond );
+			} );
+		} else {
 			$this->condition = call_user_func( $cond );
-		} );
+		}
+
 
 		return $this;
 	}
