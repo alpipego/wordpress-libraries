@@ -27,7 +27,7 @@ class Scripts extends AbstractAssets {
 			if ( in_array( $script->handle, array_keys( $this->collection->registered ) ) ) {
 				continue;
 			}
-			wp_register_script( $script->handle, $script->src ?: $this->getSrc( $script, 'js' ), $script->deps ?? [], $script->ver, $script->footer ?? true );
+			wp_register_script( $script->handle, $script->src ?: $this->getSrc( $script, 'js' ), $script->deps ?? [], $script->ver ?? filemtime( $this->getPath( $script, 'js' ) ), $script->footer ?? true );
 			if ( ! empty( $script->localize ) ) {
 				$this->localize( $script );
 			}

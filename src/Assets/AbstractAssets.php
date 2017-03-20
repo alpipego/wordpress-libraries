@@ -68,7 +68,14 @@ abstract class AbstractAssets {
 		$assetDir = apply_filters( 'alpipego/libs/assets/dir', get_stylesheet_directory_uri() );
 		$handle   = $asset->min ? $asset->handle . '.min' : $asset->handle;
 
-		return sprintf( '%1$s/%2$s/%3$s.%2$s', $assetDir, $fragment, $handle );
+		return sprintf( '%1$s/%2$s/%3$s.%2$s', untrailingslashit( $assetDir ), $fragment, $handle );
+	}
+
+	protected function getPath( Asset $asset, string $fragment ) : string {
+		$assetPath = apply_filters( 'alpipego/libs/assets/path', get_stylesheet_directory() );
+		$handle    = $asset->min ? $asset->handle . '.min' : $asset->handle;
+
+		return sprintf( '%1$s/%2$s/%3$s.%2$s', untrailingslashit( $assetPath ), $fragment, $handle );
 	}
 
 	private function requeue( Asset $asset ) {
