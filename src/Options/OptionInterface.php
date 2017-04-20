@@ -32,7 +32,7 @@ interface OptionInterface {
 	/**
 	 * @return mixed
 	 */
-	public function callback();
+	public function callback( array $args );
 
 	/**
 	 * @param $value

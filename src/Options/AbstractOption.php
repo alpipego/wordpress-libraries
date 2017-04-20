@@ -37,11 +37,11 @@ abstract class AbstractOption {
 	/**
 	 * AbstractOption constructor.
 	 *
-	 * @param $page
-	 * @param $section
-	 * @param $pluginPath
+	 * @param string $page page identifier
+	 * @param array $section section id and name
+	 * @param string $pluginPath plugin base path
 	 */
-	public function __construct( $page, $section, $pluginPath ) {
+	public function __construct( string $page, array $section, string $pluginPath ) {
 		$this->viewsPath    = $pluginPath . 'views/';
 		$this->optionsPage  = $page;
 		$this->optionsGroup = $section;
@@ -59,7 +59,13 @@ abstract class AbstractOption {
 	 *
 	 */
 	public function registerSetting() {
-		\register_setting( $this->optionsGroup['id'], $this->optionsField['id'], [ $this, 'sanitize' ] );
+		\register_setting( $this->optionsGroup['id'], $this->optionsField['id'], [
+			'sanitize_callback' => [
+				$this,
+				'sanitize',
+			],
+
+		] );
 	}
 
 	/**
@@ -69,7 +75,7 @@ abstract class AbstractOption {
 		\add_settings_field( $this->optionsField['id'], $this->optionsField['title'], [
 			$this,
 			'callback',
-		], $this->optionsPage, $this->optionsGroup, ! empty( $this->optionsField['args'] ) ? $this->optionsField['args'] : [] );
+		], $this->optionsPage, $this->optionsGroup['id'], ! empty( $this->optionsField['args'] ) ? $this->optionsField['args'] : [] );
 	}
 
 	/**

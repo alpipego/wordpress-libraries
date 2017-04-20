@@ -29,7 +29,7 @@ abstract class AbstractOptionsPage {
 	 * @param string $page
 	 */
 	function __construct( string $pluginPath, string $page ) {
-		$this->viewsPath = $pluginPath . 'views/';
+		$this->viewsPath = trailingslashit( $pluginPath ) . 'views/';
 		$this->page      = $page;
 	}
 
@@ -43,11 +43,12 @@ abstract class AbstractOptionsPage {
 	/**
 	 * Include the view
 	 */
-	function callback() {
-		$args = [
-			'page' => $this->page,
-		];
+	public function callback() {
+		$args['page'] = $this->page;
+		$this->includeView( $args );
+	}
 
-		include $this->viewsPath . 'page/' . $this->page . '.php';
+	protected function includeView( array $args ) {
+		require_once $this->viewsPath . 'page/' . $this->page . '.php';
 	}
 }

@@ -66,7 +66,7 @@ abstract class AbstractOptionsSection {
 	 * @param $name
 	 * @param $args
 	 */
-	protected function includeView( string $name, array $args ) {
+	protected function includeView( string $name, array $args = [] ) {
 		$fileArr = preg_split( '/(?=[A-Z-_])/', $name );
 		$fileArr = array_map( function ( &$value ) {
 			return trim( $value, '-_' );

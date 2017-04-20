@@ -24,7 +24,7 @@ interface OptionsPageInterface {
 	public function addPage();
 
 	/**
-	 * Include the view
+	 * Callback for add settings page
 	 */
 	public function callback();
 }
