@@ -24,10 +24,11 @@ class Scripts extends AbstractAssets {
 	public function register() {
 		/** @var Script $script */
 		foreach ( $this->assets as $script ) {
-			if ( in_array( $script->handle, array_keys( $this->collection->registered ) ) ) {
-				continue;
+			if ( ! array_key_exists( $script->handle, $this->collection->registered ) ) {
+				$script->src = $script->src ?: $this->getSrc( $script, 'js' );
+				$script->ver = $script->ver ?? filemtime( $this->getPath( $script, 'js' ) );
+				wp_register_script( $script->handle, $script->src, $script->deps ?? [], $script->ver, $script->footer ?? true );
 			}
-			wp_register_script( $script->handle, $script->src ?: $this->getSrc( $script, 'js' ), $script->deps ?? [], $script->ver ?? filemtime( $this->getPath( $script, 'js' ) ), $script->footer ?? true );
 			if ( ! empty( $script->localize ) ) {
 				$this->localize( $script );
 			}

@@ -24,10 +24,12 @@ class Styles extends AbstractAssets {
 	public function register() {
 		foreach ( $this->assets as $style ) {
 			if ( ! array_key_exists( $style->handle, $this->collection->registered ) ) {
-				wp_register_style( $style->handle, $style->src ?: $this->getSrc( $style, 'css' ), $style->deps ?? [], $style->ver ?? filemtime( $this->getPath( $style, 'css' ) ), $this->media ?? 'screen' );
-				foreach ( array_merge( $style->data, $style->extra ) as $key => $data ) {
-					$this->collection->add_data( $style->handle, $key, $data );
-				}
+				$style->src = $style->src ?: $this->getSrc( $style, 'css' );
+				$style->ver = $style->ver ?? filemtime( $this->getPath( $style, 'css' ) );
+				wp_register_style( $style->handle, $style->src, $style->deps ?? [], $style->ver, $this->media ?? 'screen' );
+			}
+			foreach ( array_merge( $style->data, $style->extra ) as $key => $data ) {
+				$this->collection->add_data( $style->handle, $key, $data );
 			}
 		}
 	}
@@ -40,7 +42,7 @@ class Styles extends AbstractAssets {
 					printf( '<noscript>%s</noscript>', $tag );
 				} );
 
-				return preg_replace( '%href=(.[^\'\"].)%', 'href data-href=$1', preg_replace( '%media=([^\s/]+)%', 'media="defer" data-media=$1', $tag ));
+				return preg_replace( '%href=(.[^\'\"].)%', 'href data-href=$1', preg_replace( '%media=([^\s/]+)%', 'media="defer" data-media=$1', $tag ) );
 			}
 		}
 
