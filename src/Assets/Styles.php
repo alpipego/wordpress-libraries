@@ -42,7 +42,7 @@ class Styles extends AbstractAssets {
 					printf( '<noscript>%s</noscript>', $tag );
 				} );
 
-				return preg_replace( '%href=(.[^\'\"].)%', 'href data-href=$1', preg_replace( '%media=([^\s/]+)%', 'media="defer" data-media=$1', $tag ) );
+				return preg_replace( '%rel=(.[^\'\"].)%', 'rel="alternate" data-rel=$1', preg_replace( '%href=(.[^\'\"].)%', 'href data-href=$1', preg_replace( '%media=([^\s/]+)%', 'media="defer" data-media=$1', $tag ) ) );
 			}
 		}
 
