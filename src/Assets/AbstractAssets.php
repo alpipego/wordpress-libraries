@@ -156,6 +156,21 @@ abstract class AbstractAssets {
 		if ( $asset->condition ) {
 			$func = "wp_dequeue_{$this->group}";
 			$func( $asset->handle );
+			// check if this is part of an aliased dependency group
+			$this->dequeueAlias($asset);
+		}
+	}
+
+	private function dequeueAlias( Asset $asset ) {
+		$aliases = [];
+		foreach (array_column($this->collection->registered, 'deps', 'handle') as $alias => $deps) {
+			if (in_array($asset->handle, $deps, true) && empty($this->collection->registered[$alias]->src)) {
+				$aliases[] = $alias;
+			}
+		}
+
+		foreach ($aliases as $alias) {
+			$this->collection->registered[$alias]->deps = array_diff( $this->collection->registered[$alias]->deps, [ $asset->handle ] );
 		}
 	}
 }
