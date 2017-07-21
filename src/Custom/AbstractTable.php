@@ -13,6 +13,7 @@ use Alpipego\WpLib\Database\DatabaseInterface;
 abstract class AbstractTable implements TableInterface
 {
     const NAME = '';
+    const SCHEMA = '';
     protected $db;
 
     public function __construct(DatabaseInterface $database)
@@ -29,11 +30,10 @@ abstract class AbstractTable implements TableInterface
 
     public function getSchema()
     {
-        $table  = $this->db->getPrefix() . self::NAME;
-        $schema = $this->schema;
+        $table = $this->db->getPrefix() . self::NAME;
 
         return "CREATE TABLE {$table} (
-			$schema
+			self::SCHEMA
 		) {$this->db->getCollate()};";
     }
 }
