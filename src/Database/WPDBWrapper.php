@@ -1,0 +1,31 @@
+<?php
+/**
+ * Created by PhpStorm.
+ * User: alpipego
+ * Date: 21.07.2017
+ * Time: 13:09
+ */
+
+namespace Alpipego\WpLib\Database;
+
+use wpdb;
+
+final class WPDBWrapper implements DatabaseInterface
+{
+    private $db;
+
+    public function __construct(wpdb $wpdb)
+    {
+        $this->db = $wpdb;
+    }
+
+    public function getPrefix()
+    {
+        return $this->db->prefix;
+    }
+
+    public function getCollate()
+    {
+        return $this->db->get_charset_collate();
+    }
+}
