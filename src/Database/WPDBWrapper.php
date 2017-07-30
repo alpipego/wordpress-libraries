@@ -19,13 +19,18 @@ final class WPDBWrapper implements DatabaseInterface
         $this->db = $wpdb;
     }
 
-    public function getPrefix()
+    public function getPrefix() : string
     {
         return $this->db->prefix;
     }
 
-    public function getCollate()
+    public function getCollate() : string
     {
         return $this->db->get_charset_collate();
+    }
+
+    public function getDb() : wpdb
+    {
+        return $this->db;
     }
 }
