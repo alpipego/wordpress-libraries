@@ -14,11 +14,26 @@ abstract class AbstractTable implements TableInterface
 {
     const NAME = '';
     const SCHEMA = '';
+    const VERSION = '';
     protected $db;
 
     public function __construct(DatabaseInterface $database)
     {
         $this->db = $database;
+        if ($this->needsUpdate()) {
+            $this->create();
+            $this->saveVersion();
+        }
+    }
+
+    protected function saveVersion() : bool
+    {
+        return update_option('n1_' . static::NAME . '_version', static::VERSION);
+    }
+
+    protected function needsUpdate() : bool
+    {
+        return static::VERSION !== get_option('n1_' . static::NAME . '_version');
     }
 
     public function create()
@@ -30,10 +45,11 @@ abstract class AbstractTable implements TableInterface
 
     public function getSchema()
     {
-        $table = $this->db->getPrefix() . self::NAME;
+        $table  = $this->db->getPrefix() . static::NAME;
+        $schema = static::SCHEMA;
 
         return "CREATE TABLE {$table} (
-			self::SCHEMA
+			{$schema}
 		) {$this->db->getCollate()};";
     }
 }
