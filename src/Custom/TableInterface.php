@@ -12,5 +12,5 @@ interface TableInterface
 {
     public function create();
 
-    public function getSchema(string $name);
+    public function getSchema();
 }
