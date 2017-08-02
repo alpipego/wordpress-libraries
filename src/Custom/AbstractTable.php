@@ -20,15 +20,14 @@ abstract class AbstractTable implements TableInterface
     public function __construct(DatabaseInterface $database)
     {
         $this->db = $database;
+    }
+
+    public function run()
+    {
         if ($this->needsUpdate()) {
             $this->create();
             $this->saveVersion();
         }
-    }
-
-    protected function saveVersion() : bool
-    {
-        return update_option('n1_' . static::NAME . '_version', static::VERSION);
     }
 
     protected function needsUpdate() : bool
@@ -51,5 +50,10 @@ abstract class AbstractTable implements TableInterface
         return "CREATE TABLE {$table} (
 			{$schema}
 		) {$this->db->getCollate()};";
+    }
+
+    protected function saveVersion() : bool
+    {
+        return update_option('n1_' . static::NAME . '_version', static::VERSION);
     }
 }
