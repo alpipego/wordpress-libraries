@@ -33,7 +33,7 @@ abstract class AbstractRequest {
 
 		if ( ! wp_verify_nonce( $_REQUEST['_wpnonce'], $action ) ) {
 			if ( $ajax ) {
-				wp_send_json_error();
+				wp_send_json_error(null, 403);
 			} else {
 				wp_redirect( wp_get_referer() );
 				exit();
