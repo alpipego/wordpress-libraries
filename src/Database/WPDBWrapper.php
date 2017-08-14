@@ -14,9 +14,9 @@ final class WPDBWrapper implements DatabaseInterface
 {
     private $db;
 
-    public function __construct(wpdb $wpdb)
+    public function __construct()
     {
-        $this->db = $wpdb;
+        $this->db = $GLOBALS['wpdb'];
     }
 
     public function getPrefix() : string
