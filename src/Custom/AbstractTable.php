@@ -25,8 +25,13 @@ abstract class AbstractTable implements TableInterface
     public function run()
     {
         if ($this->needsUpdate()) {
-            $this->create();
-            $this->saveVersion();
+            $queries = $this->create();
+            $errors  = array_filter($queries, function ($query) {
+                return strpos($query, 'database error') !== false;
+            });
+            if (empty($errors)) {
+                $this->saveVersion();
+            }
         }
     }
 
@@ -39,7 +44,7 @@ abstract class AbstractTable implements TableInterface
     {
         $sql = $this->getSchema();
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
-        dbDelta($sql);
+        return dbDelta($sql);
     }
 
     public function getSchema()
